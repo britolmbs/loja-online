@@ -1,0 +1,21 @@
+<div class="product-list">
+  <h2>Product List</h2>
+  <div class="product-grid">
+    <div *ngFor="let product of products" class="product-card">
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>{{ product.name }}</mat-card-title>
+        </mat-card-header>
+        <img mat-card-image src="{{ product.imageUrl || '/assets/placeholder-image.png' }}" alt="{{ product.name }}">
+        <mat-card-content>
+          <p>{{ product.description }}</p>
+          <p>{{ product.price | currency }}</p>
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-raised-button color="primary" routerLink="/product/{{ product.id }}">View Details</button>
+          <button mat-raised-button color="accent" (click)="addToCart(product)">Add to Cart</button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
