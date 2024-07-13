@@ -1,33 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { CartService } from '../../services/cart.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Product } from '../../models/product.model';
+import { Injectable } from '@angular/core';
+import { Product } from '../models/product.model';
 
-@Component({
-  selector: 'app-product-list',
-  templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.css']
+@Injectable({
+  providedIn: 'root'
 })
-export class ProductListComponent implements OnInit {
-  products: Product[] = [];
-
-  constructor(
-    private productService: ProductService,
-    private cartService: CartService,
-    private snackBar: MatSnackBar
-  ) {}
-
-  ngOnInit(): void {
-    this.productService.getProducts().subscribe((data: Product[]) => {
-      this.products = data;
-    });
-  }
+export class CartService {
+  private cart: Product[] = [];
 
   addToCart(product: Product): void {
-    this.cartService.addToCart(product);
-    this.snackBar.open(`${product.name} added to cart!`, 'Close', {
-      duration: 2000,
-    });
+    this.cart.push(product);
+  }
+
+  getCartItems(): Product[] {
+    return this.cart;
+  }
+
+  removeFromCart(product: Product): void {
+    const index = this.cart.findIndex(item => item.id === product.id);
+    if (index > -1) {
+      this.cart.splice(index, 1);
+    }
+  }
+
+  clearCart(): void {
+    this.cart = [];
+  }
+
+  getCartTotal(): number {
+    return this.cart.reduce((total, product) => total + product.price, 0);
   }
 }

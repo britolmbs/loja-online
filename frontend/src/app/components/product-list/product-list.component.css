@@ -1,27 +1,28 @@
+/* Estilos gerais para a lista de produtos */
 .product-list {
-    margin: 20px;
-  }
-  
-  .product-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-  
-  .product-card {
-    flex: 1 1 calc(33% - 20px);
-    box-sizing: border-box;
-  }
-  
-  @media (max-width: 1024px) {
-    .product-card {
-      flex: 1 1 calc(50% - 20px);
-    }
-  }
-  
-  @media (max-width: 600px) {
-    .product-card {
-      flex: 1 1 100%;
-    }
-  }
-  
+  padding: 16px;
+}
+
+/* Grid responsivo para os produtos */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 16px;
+}
+
+/* Estilo para cada cartão de produto */
+.product-card {
+  max-width: 100%;
+}
+
+/* Espaçador na barra de ferramentas */
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* Ajustes na barra de ferramentas */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
