@@ -1,32 +1,48 @@
 import { Injectable } from '@angular/core';
-import { Product } from '../models/product.model';
+import { CartItem } from '../models/cart-item.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
-  private cart: Product[] = [];
+  private cartItems: CartItem[] = [];
 
-  addToCart(product: Product): void {
-    this.cart.push(product);
+  constructor() {}
+
+  getCartItems(): CartItem[] {
+    return this.cartItems;
   }
 
-  getCartItems(): Product[] {
-    return this.cart;
+  addToCart(item: CartItem): void {
+    const existingItem = this.cartItems.find(cartItem => cartItem.productId === item.productId);
+    if (existingItem) {
+      existingItem.quantity += item.quantity;
+    } else {
+      this.cartItems.push(item);
+    }
   }
 
-  removeFromCart(product: Product): void {
-    const index = this.cart.findIndex(item => item.id === product.id);
-    if (index > -1) {
-      this.cart.splice(index, 1);
+  removeFromCart(productId: number): void {
+    this.cartItems = this.cartItems.filter(item => item.productId !== productId);
+  }
+
+  increaseQuantity(productId: number): void {
+    const item = this.cartItems.find(cartItem => cartItem.productId === productId);
+    if (item) {
+      item.quantity += 1;
+    }
+  }
+
+  decreaseQuantity(productId: number): void {
+    const item = this.cartItems.find(cartItem => cartItem.productId === productId);
+    if (item && item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      this.removeFromCart(productId);
     }
   }
 
   clearCart(): void {
-    this.cart = [];
-  }
-
-  getCartTotal(): number {
-    return this.cart.reduce((total, product) => total + product.price, 0);
+    this.cartItems = [];
   }
 }

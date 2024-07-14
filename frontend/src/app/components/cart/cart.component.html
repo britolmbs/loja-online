@@ -1,1 +1,41 @@
-<p>cart works!</p>
+<mat-toolbar color="primary">
+    <span>Carrinho de Compras</span>
+    </mat-toolbar>
+
+    <div class="cart-container" *ngIf="cartItems.legth > 0; else emptyCart">
+      <div *ngFor="let item of cartItems" class="cart-item">
+        <mat-card class="cart-item-card">
+            <mat-card-header>
+                <mat-card-title>{{ item.productName }}</mat-card-title>
+                <mat-card-subtitle>{{ item.price | currency }}</mat-card-subtitle>
+            </mat-card-header>
+            <img mat-card-image [src]="item.image" alt="{{ item.productName}}">
+            <mat-card-content>
+                <p>Quantidade: {{item.quantity }}</p>
+                <p>Subtotal: {{ item.totalPrice | currency }}</p>
+
+            </mat-card-content>
+            <mat-card-actions>
+                <button mat-mini-fab color="primary" (click)="descreaseQuantity(item)">
+                    <mat-icon>remover</mat-icon>
+                </button>
+                <button mat-mini-fab color="primary" (click)="increaseQuantity(item)">
+                    <mat-icon>Adicionar</mat-icon>
+                </button>
+                <button mat-mini-fab color="warn" (click)="removeItem(item)">
+                    <mat-icon>Remover</mat-icon>
+                </button>
+            </mat-card-actions>
+        </mat-card>
+      </div> 
+      
+      <div class="cart-total">
+        <p>Total: {{ total | currency }}</p>
+        <button mat-raised-button color="primary" [routerLink]="['/checkout']">Finalizar Compra</button>
+
+      </div>
+      <ng-template #emptyCart>
+        <div class="empty-cart">
+            <p>Seu carrinho está vazio.</p>
+        </div>
+      </ng-template>
