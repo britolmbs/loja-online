@@ -1,1 +1,39 @@
-<p>checkout works!</p>
+<mat-toolbar>
+    <span>Checkout</span>
+</mat-toolbar>
+
+<div class="Checkout-container">
+    <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+        <mat-card class="checkout-card">
+            <mat-card-header>
+                <mat-card-title>Detalhes do Cliente</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Nome</mat-label>
+                    <input matInput formControlName="name" required>
+                    <mat-error *ngIf="checkoutForm.get('name').hasError('required')">
+                        Método de pagamento é Obrigatorio
+                    </mat-error>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="checkout-card">
+            <mat-card-header>
+                <mat-card-title>Itens do Carrinho</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div *ngFor="let item of cartItems$ | async" class="cart-item">
+                    <p>{{ item.productName }} ({{item.quantity }} x {{ item.price | currency }})</p>
+                    <p>Total: {{item.totalPrice | currency }}</p>
+                </div>
+            </mat-card-content>
+            <mat-card-footer>
+                <p>Total Geral: {{ total$ | async | currency }}</p>
+            </mat-card-footer>
+        </mat-card>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="checkoutForm.invalid">Confirmar Pedido</button>
+    </form>
+</div>
